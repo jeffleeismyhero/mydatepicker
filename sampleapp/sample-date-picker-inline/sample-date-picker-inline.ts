@@ -103,6 +103,13 @@ export class SampleDatePickerInline implements OnInit {
         this.myDatePickerInlineOptions = copy;
     }
 
+    onMultiSelect(checked:boolean) {
+        // Mark current day
+        let copy = this.getCopyOfOptions();
+        copy.multiSelect = checked;
+        this.myDatePickerInlineOptions = copy;
+    }
+
     onDateChanged(event: IMyDateModel) {
         console.log('onDateChanged(): ', event.date, ' - jsdate: ', new Date(event.jsdate).toLocaleDateString(), ' - formatted: ', event.formatted, ' - epoc timestamp: ', event.epoc);
         if(event.formatted !== '') {

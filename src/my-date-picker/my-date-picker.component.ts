@@ -45,6 +45,7 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor {
     @Input() selector: number;
     @Input() disabled: boolean;
     @Output() dateChanged: EventEmitter<IMyDateModel> = new EventEmitter<IMyDateModel>();
+    @Output() datesChanged: EventEmitter<IMyDateModel[]> = new EventEmitter<IMyDateModel[]>();
     @Output() inputFieldChanged: EventEmitter<IMyInputFieldChanged> = new EventEmitter<IMyInputFieldChanged>();
     @Output() calendarViewChanged: EventEmitter<IMyCalendarViewChanged> = new EventEmitter<IMyCalendarViewChanged>();
     @Output() calendarToggle: EventEmitter<number> = new EventEmitter<number>();
@@ -58,6 +59,7 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor {
     visibleMonth: IMyMonth = {monthTxt: "", monthNbr: 0, year: 0};
     selectedMonth: IMyMonth = {monthTxt: "", monthNbr: 0, year: 0};
     selectedDate: IMyDate = {year: 0, month: 0, day: 0};
+    selectedDates: IMyDate[] = [];
     weekDays: Array<string> = [];
     dates: Array<IMyWeek> = [];
     months: Array<Array<IMyCalendarMonth>> = [];
@@ -121,6 +123,7 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor {
         showSelectorArrow: <boolean> true,
         showInputField: <boolean> true,
         openSelectorOnInputClick: <boolean> false,
+        multiSelect: <boolean> false,
         ariaLabelInputField: <string> "Date input field",
         ariaLabelClearDate: <string> "Clear Date",
         ariaLabelDecreaseDate: <string> "Decrease Date",
@@ -374,7 +377,7 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor {
             }
         }
 
-        if (changes.hasOwnProperty("selDate")) {
+        if (changes.hasOwnProperty("selDate") && !this.opts.multiSelect) {
             let sd: any = changes["selDate"];
             if (sd.currentValue !== null && sd.currentValue !== undefined && sd.currentValue !== "" && Object.keys(sd.currentValue).length !== 0) {
                 this.selectedDate = this.parseSelectedDate(sd.currentValue);
@@ -389,6 +392,23 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor {
                 }
             }
         }
+
+        if (changes.hasOwnProperty("selDates") && this.opts.multiSelect) {
+            let sd: any = changes["selDates"];
+            if (sd.currentValue !== null && sd.currentValue !== undefined && sd.currentValue !== "" && sd.currentValue.length !== 0) {
+                this.selectedDates = sd.currentValue.map((d: IMyDate) => this.parseSelectedDate(sd.currentValue));
+                setTimeout(() => {
+                  this.onChangeCb(this.selectedDates.map((d: IMyDate) => this.getDateModel(d)));
+                });
+            }
+            else {
+                // Do not clear on init
+                if (!sd.isFirstChange()) {
+                    this.clearDate();
+                }
+            }
+        }
+
         if (this.opts.inline) {
             this.setVisibleMonth();
         }
@@ -424,6 +444,14 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor {
         this.showSelector = false;
     }
 
+    dateSelected(date: IMyDate): boolean {
+      if (this.opts.multiSelect) {
+        return this.selectedDates.some((e) => this.utilService.isSameDate(date, e));
+      } else {
+        return this.utilService.isSameDate(date, this.selectedDate);
+      }
+    }
+
     openBtnClicked(): void {
         // Open selector button clicked
         this.showSelector = !this.showSelector;
@@ -438,9 +466,18 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor {
     }
 
     setVisibleMonth(): void {
+        let firstDate: IMyDate = {year: 0, month: 0, day: 0};
+        if (this.opts.multiSelect) {
+            if (this.selectedDates.length > 0) {
+                firstDate = this.selectedDates[0];
+            }
+        } else {
+            firstDate = this.selectedDate;
+        }
+
         // Sets visible month of calendar
         let y: number = 0, m: number = 0;
-        if (!this.utilService.isInitializedDate(this.selectedDate)) {
+        if (!this.utilService.isInitializedDate(firstDate)) {
             if (this.selectedMonth.year === 0 && this.selectedMonth.monthNbr === 0) {
                 let today: IMyDate = this.getToday();
                 y = today.year;
@@ -451,8 +488,8 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor {
             }
         }
         else {
-            y = this.selectedDate.year;
-            m = this.selectedDate.month;
+            y = firstDate.year;
+            m = firstDate.month;
         }
         this.visibleMonth = {monthTxt: this.opts.monthLabels[m], monthNbr: m, year: y};
 
@@ -514,8 +551,12 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor {
         }
         else if (cell.cmo === this.currMonthId) {
             // Current month day - if date is already selected clear it
-            if (cell.dateObj.year === this.selectedDate.year && cell.dateObj.month === this.selectedDate.month && cell.dateObj.day === this.selectedDate.day) {
-                this.clearDate();
+            if (this.dateSelected(cell.dateObj)) {
+                if (this.opts.multiSelect) {
+                    this.selectDate(cell.dateObj, true);
+                } else {
+                    this.clearDate();
+                }
             }
             else {
                 this.selectDate(cell.dateObj);
@@ -538,6 +579,7 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor {
 
     clearDate(): void {
         // Clears the date and notifies parent using callbacks and value accessor
+        // TODO: multiselect support
         let date: IMyDate = {year: 0, month: 0, day: 0};
         this.dateChanged.emit({date: date, jsdate: null, formatted: "", epoc: 0});
         this.onChangeCb("");
@@ -551,7 +593,7 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor {
       if (date.day !== 0 && date.month !== 0 && date.year !== 0) {
         let advancedDate = this.getDate(this.selectedDate.year, this.selectedDate.month, this.selectedDate.day);
         advancedDate.setDate(advancedDate.getDate() - 1);
-        date = {year: advancedDate.getFullYear(), month: advancedDate.getMonth() + 1, day: advancedDate.getDate()};;
+        date = {year: advancedDate.getFullYear(), month: advancedDate.getMonth() + 1, day: advancedDate.getDate()};
       } else {
         date = this.getToday();
       }
@@ -573,7 +615,7 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor {
         if (date.day !== 0 && date.month !== 0 && date.year !== 0) {
           let advancedDate = this.getDate(this.selectedDate.year, this.selectedDate.month, this.selectedDate.day);
           advancedDate.setDate(advancedDate.getDate() + 1);
-          date = {year: advancedDate.getFullYear(), month: advancedDate.getMonth() + 1, day: advancedDate.getDate()};;
+          date = {year: advancedDate.getFullYear(), month: advancedDate.getMonth() + 1, day: advancedDate.getDate()};
         } else {
           date = this.getToday();
         }
@@ -589,25 +631,78 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor {
         this.showSelector = false;
     }
 
-    selectDate(date: IMyDate): void {
+    selectDate(date: IMyDate, remove: boolean = false): void {
         // Date selected, notifies parent using callbacks and value accessor
-        let dateModel: IMyDateModel = this.getDateModel(date);
-        this.dateChanged.emit(dateModel);
-        this.onChangeCb(dateModel);
-        this.onTouchedCb();
-        this.updateDateValue(date, false);
-        if (this.showSelector) {
-            this.calendarToggle.emit(CalToggle.CloseByDateSel);
+        this.updateDateValue(date, remove);
+
+        if (this.opts.multiSelect) {
+            let dateModels: IMyDateModel[] = this.selectedDates.map((d: IMyDate) => this.getDateModel(d));
+            this.datesChanged.emit(dateModels);
+            this.onChangeCb(dateModels);
+            this.onTouchedCb();
+        } else {
+            let dateModel: IMyDateModel = this.getDateModel(date);
+            this.dateChanged.emit(dateModel);
+            this.onChangeCb(dateModel);
+            this.onTouchedCb();
+            if (this.showSelector) {
+                this.calendarToggle.emit(CalToggle.CloseByDateSel);
+                this.showSelector = false;
+            }
         }
-        this.showSelector = false;
+    }
+
+    compareDates(a: IMyDate, b: IMyDate): number {
+        if (a.year < b.year) {
+            return -1;
+        }
+        if (a.year > b.year) {
+            return 1;
+        }
+
+        if (a.month < b.month) {
+            return -1;
+        }
+        if (a.month > b.month) {
+            return 1;
+        }
+
+        if (a.day < b.day) {
+            return -1;
+        }
+        if (a.day > b.day) {
+            return 1;
+        }
+
+        return 0;
     }
 
     updateDateValue(date: IMyDate, clear: boolean): void {
         // Updates date values
-        this.selectedDate = date;
-        this.selectionDayTxt = clear ? "" : this.formatDate(date);
-        this.inputFieldChanged.emit({value: this.selectionDayTxt, dateFormat: this.opts.dateFormat, valid: !clear});
-        this.invalidDate = false;
+        if (this.opts.multiSelect) {
+            if (clear) {
+                this.selectedDates = this.selectedDates.filter((d: IMyDate) => !this.utilService.isSameDate(date, d));
+            } else {
+                let newDates: IMyDate[] = this.selectedDates.slice();
+                newDates.push(date);
+                newDates.sort(this.compareDates);
+                this.selectedDates = newDates;
+            }
+
+            if (this.selectedDates.length === 0) {
+                this.selectionDayTxt = "";
+            } else if (this.selectedDates.length === 1) {
+                this.selectionDayTxt = this.formatDate(this.selectedDates[0]);
+            } else {
+                // TODO: localization?
+                this.selectionDayTxt = this.formatDate(this.selectedDates[0]) + " to " + this.formatDate(this.selectedDates[this.selectedDates.length - 1]);
+            }
+        } else {
+            this.selectedDate = date;
+            this.selectionDayTxt = clear ? "" : this.formatDate(date);
+            this.inputFieldChanged.emit({value: this.selectionDayTxt, dateFormat: this.opts.dateFormat, valid: !clear});
+            this.invalidDate = false;
+        }
     }
 
     getDateModel(date: IMyDate): IMyDateModel {

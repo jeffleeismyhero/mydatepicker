@@ -173,6 +173,12 @@ export class SampleDatePickerNormal implements OnInit {
         this.myDatePickerNormalOptions = copy;
     }
 
+    onMultiSelect(checked: boolean): void {
+        let copy = this.getCopyOfOptions();
+        copy.multiSelect = checked;
+        this.myDatePickerNormalOptions = copy;
+    }
+
     onToggleSelector(event: any) {
         event.stopPropagation();
         this.mydp.openBtnClicked();

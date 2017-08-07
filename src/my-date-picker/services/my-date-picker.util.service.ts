@@ -197,6 +197,10 @@ export class UtilService {
         return date.year !== 0 && date.month !== 0 && date.day !== 0;
     }
 
+    isSameDate(d1: IMyDate, d2: IMyDate): boolean {
+        return d1.year === d2.year && d1.month === d2.month && d1.day === d2.day;
+    }
+
     getTimeInMilliseconds(date: IMyDate): number {
         return new Date(date.year, date.month - 1, date.day, 0, 0, 0, 0).getTime();
     }

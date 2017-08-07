@@ -97,6 +97,12 @@
             </label>
         </li>
         <li>
+            <label>
+                <span>Multi-select:</span>
+                <input style="cursor: pointer" type="checkbox" (change)="onMultiSelect($event.currentTarget.checked)" [checked]="false">
+            </label>
+        </li>
+        <li>
             <button type="button" (click)="onToggleSelector($event)" [disabled]="disabled" [ngStyle]="{'cursor': disabled ? 'not-allowed' : 'pointer'}">Toggle selector</button>
         </li>
     </ul>
