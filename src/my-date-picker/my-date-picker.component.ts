@@ -41,6 +41,7 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor {
     @Input() locale: string;
     @Input() defaultMonth: string;
     @Input() selDate: string;
+    @Input() selDates: string;
     @Input() placeholder: string;
     @Input() selector: number;
     @Input() disabled: boolean;
@@ -396,7 +397,7 @@ export class MyDatePicker implements OnChanges, ControlValueAccessor {
         if (changes.hasOwnProperty("selDates") && this.opts.multiSelect) {
             let sd: any = changes["selDates"];
             if (sd.currentValue !== null && sd.currentValue !== undefined && sd.currentValue !== "" && sd.currentValue.length !== 0) {
-                this.selectedDates = sd.currentValue.map((d: IMyDate) => this.parseSelectedDate(sd.currentValue));
+                this.selectedDates = sd.currentValue.map((d: IMyDate) => this.parseSelectedDate(d));
                 setTimeout(() => {
                   this.onChangeCb(this.selectedDates.map((d: IMyDate) => this.getDateModel(d)));
                 });
