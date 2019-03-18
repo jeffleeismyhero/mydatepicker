@@ -16,3 +16,6 @@ export * from "./my-weekday.interface";
 export * from "./my-calendar-view-changed.interface";
 export * from "./my-marked-date.interface";
 export * from "./my-marked-dates.interface";
+export * from "./my-default-month.interface";
+export * from "./my-selector.interface";
+export * from "./my-date-format.interface";

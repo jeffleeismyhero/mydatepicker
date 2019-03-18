@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {IMyOptions, IMyDateModel, IMyCalendarViewChanged} from '../../src/my-date-picker/interfaces';
+import {IMyDpOptions, IMyDateModel, IMyCalendarViewChanged} from '../../src/my-date-picker/interfaces';
 
 declare var require:any;
 const inlineSampleTpl: string = require('./sample-date-picker-inline.html');
@@ -11,11 +11,14 @@ const inlineSampleTpl: string = require('./sample-date-picker-inline.html');
 
 export class SampleDatePickerInline implements OnInit {
 
-    private myDatePickerInlineOptions: IMyOptions = {
+    private myDatePickerInlineOptions: IMyDpOptions = {
         inline: true,
         disableUntil: {year: 0, month: 0, day: 0},
         disableDays: [{year: 0, month: 0, day: 0}],
-        showWeekNumbers: true
+        showWeekNumbers: true,
+        selectorHeight: '232px',
+        selectorWidth: '252px',
+        allowSelectionOnlyInCurrentMonth: false
     };
     private selectedDateInline: Object = {};
 
@@ -23,7 +26,8 @@ export class SampleDatePickerInline implements OnInit {
     private border: string = 'none';
     private locale:string = 'en';
 
-    private locales:Array<string> = new Array('en', 'fr', 'ja', 'fi', 'es', 'hu', 'sv', 'nl', 'ru', 'uk', 'no', 'tr', 'pt-br', 'de', 'it', 'it-ch', 'pl', 'my', 'sk', 'sl', 'zh-cn', 'he', 'ro', 'ca', 'id', 'en-au', 'am-et', 'cs', 'el', 'kk', 'th', 'ko-kr', 'da');
+    private selectorSizes: Array<string> = new Array('normal', 'small');
+    private locales:Array<string> = new Array('en', 'fr', 'ja', 'fi', 'es', 'hu', 'sv', 'nl', 'ru', 'uk', 'no', 'tr', 'pt-br', 'de', 'it', 'it-ch', 'pl', 'my', 'sk', 'sl', 'zh-cn', 'he', 'ro', 'ca', 'id', 'en-au', 'am-et', 'cs', 'el', 'kk', 'th', 'ko-kr', 'da', 'lt', 'vi', 'bn', 'bg', 'hr', 'ar', 'is', 'de-ch', 'fr-ch', 'tw', 'lv', 'et');
 
     constructor() {}
 
@@ -33,6 +37,20 @@ export class SampleDatePickerInline implements OnInit {
 
     onChangeLocale(locale:string) {
         this.locale = locale;
+    }
+
+    onSelectorSize(size:string) {
+        let copy = this.getCopyOfOptions();
+        if (size === 'normal') {
+            copy.selectorHeight = '232px';
+            copy.selectorWidth = '252px';
+            this.myDatePickerInlineOptions = copy;
+        }
+        else {
+            copy.selectorHeight = '200px';
+            copy.selectorWidth = '220px';
+            this.myDatePickerInlineOptions = copy;
+        }
     }
 
     onDisablePast(checked:boolean) {
@@ -126,7 +144,7 @@ export class SampleDatePickerInline implements OnInit {
         console.log('onCalendarViewChanged(): Year: ', event.year, ' - month: ', event.month, ' - first: ', event.first, ' - last: ', event.last);
     }
 
-    getCopyOfOptions(): IMyOptions {
+    getCopyOfOptions(): IMyDpOptions {
         return JSON.parse(JSON.stringify(this.myDatePickerInlineOptions));
     }
 

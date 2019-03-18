@@ -12,8 +12,12 @@ export interface IMyOptions {
     showTodayBtn?: boolean;
     todayBtnTxt?: string;
     firstDayOfWeek?: string;
+    satHighlight?: boolean;
     sunHighlight?: boolean;
+    highlightDates?: Array<IMyDate>;
     markCurrentDay?: boolean;
+    markCurrentMonth?: boolean;
+    markCurrentYear?: boolean;
     disableUntil?: IMyDate;
     disableSince?: IMyDate;
     disableDays?: Array<IMyDate>;
@@ -22,10 +26,14 @@ export interface IMyOptions {
     markWeekends?: IMyMarkedDate;
     disableDateRanges?: Array<IMyDateRange>;
     disableWeekends?: boolean;
+    disableWeekdays?: Array<string>;
     showWeekNumbers?: boolean;
     height?: string;
     width?: string;
     selectionTxtFontSize?: string;
+    selectorHeight?: string;
+    selectorWidth?: string;
+    allowDeselectDate?: boolean;
     inline?: boolean;
     showClearDateBtn?: boolean;
     showDecreaseDateBtn?: boolean;
@@ -43,7 +51,7 @@ export interface IMyOptions {
     showSelectorArrow?: boolean;
     showInputField?: boolean;
     openSelectorOnInputClick?: boolean;
-    multiSelect?: boolean;
+    allowSelectionOnlyInCurrentMonth?: boolean;
     ariaLabelInputField?: string;
     ariaLabelClearDate?: string;
     ariaLabelDecreaseDate?: string;
@@ -54,3 +62,5 @@ export interface IMyOptions {
     ariaLabelPrevYear?: string;
     ariaLabelNextYear?: string;
 }
+
+export interface IMyDpOptions extends IMyOptions {}

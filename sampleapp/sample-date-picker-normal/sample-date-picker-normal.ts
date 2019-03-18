@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {IMyOptions, IMyDateModel, IMyInputFieldChanged, IMyCalendarViewChanged, IMyInputFocusBlur, IMyMarkedDate} from '../../src/my-date-picker/interfaces';
+import {IMyDpOptions, IMyDateModel, IMyInputFieldChanged, IMyCalendarViewChanged, IMyInputFocusBlur, IMyMarkedDate, IMyDate, IMySelector} from '../../src/my-date-picker/interfaces';
 import {MyDatePicker} from '../../src/my-date-picker/my-date-picker.component';
 
 declare var require:any;
@@ -14,9 +14,9 @@ export class SampleDatePickerNormal implements OnInit {
 
     @ViewChild('mydp') mydp: MyDatePicker;
 
-    private myDatePickerNormalOptions: IMyOptions = {
+    private myDatePickerNormalOptions: IMyDpOptions = {
         todayBtnTxt: 'Today',
-        dateFormat: 'mmm dd, yyyy',
+        dateFormat: 'dd.mm.yyyy',
         firstDayOfWeek: 'mo',
         sunHighlight: true,
         markCurrentDay: true,
@@ -27,7 +27,7 @@ export class SampleDatePickerNormal implements OnInit {
         indicateInvalidDate: true,
         monthSelector: true,
         yearSelector: true,
-        minYear: 1900,
+        minYear: 1970,
         maxYear: 2200,
         componentDisabled: false,
         showClearDateBtn: true,
@@ -39,6 +39,8 @@ export class SampleDatePickerNormal implements OnInit {
         disableHeaderButtons: true,
         showWeekNumbers: false,
         markDates: [],
+        satHighlight: false,
+        highlightDates: [],
         markWeekends: <IMyMarkedDate>{},
         monthLabels: {
             1: 'January',
@@ -53,7 +55,10 @@ export class SampleDatePickerNormal implements OnInit {
             10: 'October',
             11: 'November',
             12: 'December'
-        }
+        },
+        allowDeselectDate: true,
+        disableWeekdays: [],
+        allowSelectionOnlyInCurrentMonth: true
     };
     private selectedDateNormal:string = '';
 
@@ -63,17 +68,13 @@ export class SampleDatePickerNormal implements OnInit {
     private placeholder: string = 'Select date';
     private disabled: boolean = false;
 
+    private selector: IMySelector = {
+        open: false
+    };
+
     constructor() {}
 
     clearDate() {
-        this.selectedDateNormal = '';
-    }
-
-    decreaseDate() {
-        this.selectedDateNormal = '';
-    }
-
-    increaseDate() {
         this.selectedDateNormal = '';
     }
 
@@ -173,15 +174,67 @@ export class SampleDatePickerNormal implements OnInit {
         this.myDatePickerNormalOptions = copy;
     }
 
-    onMultiSelect(checked: boolean): void {
+    onHighlighSaturday(checked: boolean): void {
         let copy = this.getCopyOfOptions();
-        copy.multiSelect = checked;
+        copy.satHighlight = checked;
+        this.myDatePickerNormalOptions = copy;
+    }
+
+    onHighlighSunday(checked: boolean): void {
+        let copy = this.getCopyOfOptions();
+        copy.sunHighlight = checked;
+        this.myDatePickerNormalOptions = copy;
+    }
+
+    onHighlightDates(checked: boolean): void {
+        let d: Date = new Date();
+        let copy = this.getCopyOfOptions();
+        let dates: Array<IMyDate> = [];
+        dates.push({year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate()});
+
+        d.setDate(d.getDate() + 1);
+        dates.push({year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate()});
+
+        dates.push({year: 2017, month: 6, day: 1});
+
+        copy.highlightDates = checked ? dates : [];
+        this.myDatePickerNormalOptions = copy;
+    }
+
+    onDisableTueAndThu(checked: boolean): void {
+        let copy = this.getCopyOfOptions();
+        copy.disableWeekdays = checked ? ['tu', 'th'] : [];
+        this.myDatePickerNormalOptions = copy;
+    }
+
+    onAllowDeselectDate(checked: boolean): void {
+        let copy = this.getCopyOfOptions();
+        copy.allowDeselectDate = checked;
+        this.myDatePickerNormalOptions = copy;
+    }
+
+    onAllowSelectionOnlyCurrentMonth(checked: boolean): void {
+        let copy = this.getCopyOfOptions();
+        copy.allowSelectionOnlyInCurrentMonth = checked;
         this.myDatePickerNormalOptions = copy;
     }
 
     onToggleSelector(event: any) {
         event.stopPropagation();
+        // call function of mydatepicker
         this.mydp.openBtnClicked();
+    }
+
+    onOpenSelector() {
+        this.selector = {
+            open: true
+        };
+    }
+
+    onCloseSelector() {
+        this.selector = {
+            open: false
+        };
     }
 
     ngOnInit() {
@@ -218,7 +271,7 @@ export class SampleDatePickerNormal implements OnInit {
         console.log('onInputFocusBlur(): Reason: ', event. reason, ' - Value: ', event.value);
     }
 
-    getCopyOfOptions(): IMyOptions {
+    getCopyOfOptions(): IMyDpOptions {
         return JSON.parse(JSON.stringify(this.myDatePickerNormalOptions));
     }
 }

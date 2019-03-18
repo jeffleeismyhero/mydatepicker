@@ -33,9 +33,9 @@
             <div class="title">ngModel</div>
             <div>
                 <form #f="ngForm" (ngSubmit)="onSubmitNgModel()" novalidate>
-                    <my-date-picker name="ngModelDate" [options]="myDatePickerOptions" [selector]="selector" [(ngModel)]="model.mydate" required></my-date-picker>
+                    <my-date-picker name="ngModelDate" [options]="myDatePickerOptions" [selector]="selector" [(ngModel)]="model" required></my-date-picker>
                     <div>
-                        <button class="button" type="submit" [disabled]="!f.valid">Submit</button>
+                        <button class="button" type="submit">Submit</button>
                         <button class="button" type="button" (click)="clearNgModelDate()">Clear date</button>
                         <button class="button" type="button" (click)="toggleSelector($event)">Toggle selector</button>
                         <p class="error" *ngIf="!f.valid">Date is required!</p>
@@ -53,7 +53,7 @@
                     <my-date-picker name="reactiveFormsDate" [options]="myDatePickerOptions" formControlName="myDate"
                                     (inputFieldChanged)="onInputFieldChanged($event)"></my-date-picker>
                     <div>
-                        <button class="button" type="submit" [disabled]="myForm.controls.myDate.errors">Submit</button>
+                        <button class="button" type="submit">Submit</button>
                         <button class="button" type="button" (click)="setDate()">Set Today</button>
                         <button class="button" type="button" (click)="resetDate()">Reset Today</button>
                         <button class="button" type="button" (click)="clearDate()">Set Empty</button>

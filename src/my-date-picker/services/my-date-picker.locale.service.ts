@@ -7,7 +7,7 @@ export class LocaleService {
         "en": {
             dayLabels: {su: "Sun", mo: "Mon", tu: "Tue", we: "Wed", th: "Thu", fr: "Fri", sa: "Sat"},
             monthLabels: { 1: "Jan", 2: "Feb", 3: "Mar", 4: "Apr", 5: "May", 6: "Jun", 7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec" },
-            dateFormat: "yyyy-mm-dd",
+            dateFormat: "mm/dd/yyyy",
             todayBtnTxt: "Today",
             firstDayOfWeek: "mo",
             sunHighlight: true,
@@ -31,6 +31,14 @@ export class LocaleService {
             dayLabels: {su: "Dim", mo: "Lun", tu: "Mar", we: "Mer", th: "Jeu", fr: "Ven", sa: "Sam"},
             monthLabels: {1: "Jan", 2: "Fév", 3: "Mar", 4: "Avr", 5: "Mai", 6: "Juin", 7: "Juil", 8: "Aoû", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Déc"},
             dateFormat: "dd/mm/yyyy",
+            todayBtnTxt: "Aujourd'hui",
+            firstDayOfWeek: "mo",
+            sunHighlight: true,
+        },
+        "fr-ch": {
+            dayLabels: {su: "Dim", mo: "Lun", tu: "Mar", we: "Mer", th: "Jeu", fr: "Ven", sa: "Sam"},
+            monthLabels: {1: "Jan", 2: "Fév", 3: "Mar", 4: "Avr", 5: "Mai", 6: "Juin", 7: "Juil", 8: "Aoû", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Déc"},
+            dateFormat: "dd.mm.yyyy",
             todayBtnTxt: "Aujourd'hui",
             firstDayOfWeek: "mo",
             sunHighlight: true,
@@ -116,6 +124,14 @@ export class LocaleService {
             sunHighlight: true
         },
         "de": {
+            dayLabels: {su: "So", mo: "Mo", tu: "Di", we: "Mi", th: "Do", fr: "Fr", sa: "Sa"},
+            monthLabels: { 1: "Jan", 2: "Feb", 3: "Mär", 4: "Apr", 5: "Mai", 6: "Jun", 7: "Jul", 8: "Aug", 9: "Sep", 10: "Okt", 11: "Nov", 12: "Dez" },
+            dateFormat: "dd.mm.yyyy",
+            todayBtnTxt: "Heute",
+            firstDayOfWeek: "mo",
+            sunHighlight: true
+        },
+        "de-ch": {
             dayLabels: {su: "So", mo: "Mo", tu: "Di", we: "Mi", th: "Do", fr: "Fr", sa: "Sa"},
             monthLabels: { 1: "Jan", 2: "Feb", 3: "Mär", 4: "Apr", 5: "Mai", 6: "Jun", 7: "Jul", 8: "Aug", 9: "Sep", 10: "Okt", 11: "Nov", 12: "Dez" },
             dateFormat: "dd.mm.yyyy",
@@ -264,6 +280,86 @@ export class LocaleService {
             monthLabels: { 1: "Jan", 2: "Feb", 3: "Mar", 4: "Apr", 5: "Maj", 6: "Jun", 7: "Jul", 8: "Aug", 9: "Sep", 10: "Okt", 11: "Nov", 12: "Dec" },
             dateFormat: "dd-mm-yyyy",
             todayBtnTxt: "I dag",
+            firstDayOfWeek: "mo",
+            sunHighlight: true
+        },
+        "lt": {
+            dayLabels: {su: "Sk", mo: "Pr", tu: "An", we: "Tr", th: "Kt", fr: "Pn", sa: "Št"},
+            monthLabels: { 1: "Saus.", 2: "Vas.", 3: "Kov.", 4: "Bal.", 5: "Geg.", 6: "Birž.", 7: "Liep.", 8: "Rugp.", 9: "Rugs.", 10: "Sapl.", 11: "Lapkr.", 12: "Gruod." },
+            dateFormat: "yyyy-mm-dd",
+            todayBtnTxt: "Šianien",
+            firstDayOfWeek: "mo",
+            sunHighlight: true
+        },
+        "vi": {
+            dayLabels: {su: "CN", mo: "T2", tu: "T3", we: "T4", th: "T5", fr: "T6", sa: "T7"},
+            monthLabels: { 1: "THG 1", 2: "THG 2", 3: "THG 3", 4: "THG 4", 5: "THG 5", 6: "THG 6", 7: "THG 7", 8: "THG 8", 9: "THG 9", 10: "THG 10", 11: "THG 11", 12: "THG 12" },
+            dateFormat: "dd/mm/yyyy",
+            todayBtnTxt: "Hôm nay",
+            firstDayOfWeek: "mo",
+            sunHighlight: true,
+        },
+        "bn": {
+            dayLabels: {su: "রবি", mo: "সোম", tu: "মঙ্গল", we: "বুধ", th: "বৃহঃ", fr: "শুক্র", sa: "শনি"},
+            monthLabels: { 1: "জানু", 2: "ফেব্রু", 3: "মার্চ", 4: "এপ্রিল", 5: "মে", 6: "জুন", 7: "জুলাই", 8: "আগস্ট", 9: "সেপ্টে", 10: "অক্টো", 11: "নভে", 12: "ডিসে" },
+            dateFormat: "dd-mm-yyyy",
+            todayBtnTxt: "আজ",
+            firstDayOfWeek: "su",
+            sunHighlight: true
+        },
+        "bg": {
+            dayLabels: {su: "нд", mo: "пн", tu: "вт", we: "ср", th: "чт", fr: "пт", sa: "сб"},
+            monthLabels: { 1: "яну.", 2: "фев.", 3: "март", 4: "апр.", 5: "май", 6: "юни", 7: "юли", 8: "авг.", 9: "сеп.", 10: "окт.", 11: "ное.", 12: "дек." },
+            dateFormat: "dd.mm.yyyy",
+            todayBtnTxt: "днес",
+            firstDayOfWeek: "mo",
+            sunHighlight: true
+        },
+        "hr": {
+            dayLabels: {su: "Ne", mo: "Po", tu: "Ul", we: "Sr", th: "Če", fr: "Pe", sa: "Su"},
+            monthLabels: { 1: "Sij", 2: "Vel", 3: "Ožu", 4: "Tra", 5: "Svi", 6: "Lip", 7: "Srp", 8: "Kol", 9: "Ruj", 10: "Lis", 11: "Stu", 12: "Pro" },
+            dateFormat: "dd.mm.yyyy.",
+            todayBtnTxt: "danas",
+            firstDayOfWeek: "su",
+            sunHighlight: true
+        },
+        "ar": {
+            dayLabels: { su: "الأحد", mo: "الاثنين", tu: "الثلاثاء", we: "الاربعاء", th: "الخميس", fr: "الجمعة", sa: "السبت" },
+            monthLabels: { 1: "يناير", 2: "فبراير", 3: "مارس", 4: "ابريل", 5: "مايو", 6: "يونيو", 7: "يوليو", 8: "أغسطس", 9: "سبتمبر", 10: "أكتوبر", 11: "نوفمبر", 12: "ديسمبر" },
+            dateFormat: "yyyy-mm-dd",
+            todayBtnTxt: "اليوم",
+            firstDayOfWeek: "sa",
+            sunHighlight: true
+        },
+        "is": {
+            dayLabels: {su: "sun", mo: "mán", tu: "þri", we: "mið", th: "fim", fr: "fös", sa: "lau"},
+            monthLabels: { 1: "jan", 2: "feb", 3: "mar", 4: "apr", 5: "maí", 6: "jún", 7: "júl", 8: "ágú", 9: "sep", 10: "okt", 11: "nóv", 12: "des" },
+            dateFormat: "dd.mm.yyyy",
+            todayBtnTxt: "Í dag",
+            firstDayOfWeek: "su",
+            sunHighlight: true
+        },
+        "tw": {
+            dayLabels: {su: "週日", mo: "週一", tu: "週二", we: "週三", th: "週四", fr: "週五", sa: "週六"},
+            monthLabels: {1: "一月", 2: "二月", 3: "三月", 4: "四月", 5: "五月", 6: "六月", 7: "七月", 8: "八月", 9: "九月", 10: "十月", 11: "十一月", 12: "十二月"},
+            dateFormat: "yyyy-mm-dd",
+            todayBtnTxt: "今天",
+            firstDayOfWeek: "mo",
+            sunHighlight: true
+        },
+        "lv": {
+            dayLabels: { su: "S", mo: "P", tu: "O", we: "T", th: "C", fr: "P", sa: "S" },
+            monthLabels: {1: "Janv", 2: "Febr", 3: "Marts", 4: "Apr", 5: "Maijs", 6: "Jūn", 7: "Jūl", 8: "Aug", 9: "Sept", 10: "Okt", 11: "Nov", 12: "Dec"},
+            dateFormat: "dd.mm.yyyy",
+            todayBtnTxt: "Šodien",
+            firstDayOfWeek: "mo",
+            sunHighlight: true
+        },
+        "et": {
+            dayLabels: { su: "P", mo: "E", tu: "T", we: "K", th: "N", fr: "R", sa: "L" },
+            monthLabels: {1: "Jaan", 2: "Veebr", 3: "Märts", 4: "Apr", 5: "Mai", 6: "Juuni", 7: "Juuli", 8: "Aug", 9: "Sept", 10: "Okt", 11: "Nov", 12: "Dets"},
+            dateFormat: "dd.mm.yyyy",
+            todayBtnTxt: "Täna",
             firstDayOfWeek: "mo",
             sunHighlight: true
         }

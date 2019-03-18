@@ -13,7 +13,7 @@ const amSampleTpl: string = require('./sample-date-picker-access-modifier.html')
 export class SampleDatePickerAccessModifier implements OnInit {
 
     private myDatePickerOptions: IMyOptions = {
-        dateFormat: 'dd.mm.yyyy',
+        dateFormat: 'd.m.yyyy',
         height: '34px',
         width: '210px',
         inline: false
@@ -21,15 +21,10 @@ export class SampleDatePickerAccessModifier implements OnInit {
 
     private myForm: FormGroup;
 
-    //private model: string = '';   // not initial date set
+    private model: string = null;   // not initial date set (use null or empty string)
+    //private model: Object = {jsdate: new Date()};   // initialize today with jsdate property
     //private model: Object = {date: {year: 2018, month: 10, day: 9}};   // this example is initialized to specific date
-
-    private model = {
-        mydate: <Object> {date: {year: 2018, month: 10, day: 9}},
-        property1: true,
-        property2: 'testing...'
-    };
-
+    //private model: Object = {formatted: '24.09.2018'};   // this example is initialized to specific date
 
     private selector: number = 0;
 
@@ -38,7 +33,8 @@ export class SampleDatePickerAccessModifier implements OnInit {
     ngOnInit() {
         console.log('onInit(): SampleDatePickerReactiveForms');
         this.myForm = this.formBuilder.group({
-            //myDate: ['', Validators.required]   // not initial date set
+            //myDate: [null, Validators.required]   // not initial date set
+            //myDate: [{jsdate: new Date()}, Validators.required] // initialize today with jsdate property
             myDate: [{date: {year: 2018, month: 10, day: 9}}, Validators.required]   // this example is initialized to specific date
         });
     }
@@ -49,7 +45,7 @@ export class SampleDatePickerAccessModifier implements OnInit {
     }
 
     clearNgModelDate(): void {
-        this.model.mydate = '';
+        this.model = null;
     }
 
     toggleSelector(event: any): void {
@@ -71,18 +67,17 @@ export class SampleDatePickerAccessModifier implements OnInit {
     setDate(): void {
         // Set today using the setValue function
         let date: Date = new Date();
-        this.myForm.setValue({myDate: {date: {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()}}});
+        this.myForm.patchValue({myDate: {date: {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()}}});
     }
 
     resetDate(): void {
         // Reset date picker to specific date (today)
-        let date: Date = new Date();
-        this.myForm.reset({myDate: {date: {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()}}});
+        this.myForm.reset({myDate: {jsdate: new Date()}});
     }
 
     clearDate(): void {
-        // Clear the date using the setValue function
-        this.myForm.setValue({myDate: ''});
+        // Clear the date using the patchValue function (use null or empty string)
+        this.myForm.patchValue({myDate: null});
     }
 
     onInputFieldChanged(event: IMyInputFieldChanged) {
